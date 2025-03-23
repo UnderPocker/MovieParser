@@ -14,7 +14,10 @@ public class ImageLoader {
             // Открываем поток для чтения данных по URL
             InputStream in = new URL(imageUrl).openStream();
             // Копируем содержимое потока в файл на диске
-            Files.copy(in, new File(folder.toString() + "FRAME_" + frame + ".jpeg").toPath(), StandardCopyOption.REPLACE_EXISTING);
+            Path targetPath = folder.resolve(new File("FRAME_" + frame + ".jpeg").toPath());
+            if (!Files.exists(targetPath)) {
+                Files.copy(in, targetPath, StandardCopyOption.REPLACE_EXISTING);
+            }
             // Закрываем поток
             in.close();
         } catch (IOException e) {
